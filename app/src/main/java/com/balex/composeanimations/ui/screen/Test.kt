@@ -1,6 +1,7 @@
 package com.balex.composeanimations.ui.screen
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloat
@@ -31,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -58,18 +60,17 @@ fun Test() {
             animationSpec = infiniteRepeatable(
                 animation = tween(durationMillis = 2000),
                 repeatMode = RepeatMode.Reverse
-            ))
+            )
+        )
 
-//        val size by animateDpAsState(
-//            targetValue = if (isIncreased) 200.dp else 100.dp,
-//            animationSpec = tween(
-//                durationMillis = 2000,
-//                delayMillis = 1000
-//            )
-
-//            animationSpec = spring(dampingRatio = Spring.DampingRatioHighBouncy, stiffness = Spring.StiffnessLow)
-
-
+        val rotation by infiniteTransition.animateFloat(
+            initialValue = 0f,
+            targetValue = 260f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(durationMillis = 2000, easing = LinearEasing),
+                repeatMode = RepeatMode.Reverse
+            )
+        )
 
 
 
@@ -106,7 +107,8 @@ fun Test() {
         }
         AnimatedContainer(
             text = "Shape",
-            radiusPercent = radius
+            radiusPercent = radius,
+            rotation = rotation
         )
 
         var isSelected by remember {
@@ -175,10 +177,13 @@ private fun AnimatedContainer(
     radiusPercent: Int = 4,
     borderWidth: Dp = 0.dp,
     backgroundColor: Color = Color.Blue,
-    alpha: Float = 1f
+    alpha: Float = 1f,
+    rotation: Float = 0f
 ) {
+    //Log.d("AnimatedContainer", "AnimatedContainer")
     Box(
         modifier = Modifier
+            .rotate(rotation)
             .alpha(alpha)
             .clip(RoundedCornerShape(radiusPercent))
             .border(width = borderWidth, color = Color.Black)
