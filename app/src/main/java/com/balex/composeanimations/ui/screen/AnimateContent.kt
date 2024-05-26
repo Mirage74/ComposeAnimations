@@ -1,13 +1,28 @@
 package com.balex.composeanimations.ui.screen
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+
 
 @Composable
 fun AnimateContent() {
@@ -27,10 +42,26 @@ fun AnimateContent() {
         ) {
             Text(text = "Switch screens")
         }
-        if (isFirstScreenLaunched) {
-            Screen1()
-        } else {
-            Screen2()
+
+        AnimatedContent(
+
+            targetState = isFirstScreenLaunched,
+            transitionSpec = {
+                //slideIn (tween(2000)) { IntOffset(0, -it.height) } togetherWith fadeOut(tween(durationMillis = 1500))
+
+                if (targetState) {
+                    //slideInHorizontally(tween(2000)) { -it } togetherWith slideOutHorizontally(tween(2000)) { it }
+                    slideInHorizontally(tween(2000)) { -it } togetherWith slideOutVertically (tween(2000)) { it }
+                } else {
+                    slideInHorizontally(tween(2000)) { it } togetherWith slideOutHorizontally(tween(2000)) { -it }
+                }
+            }
+        ) { shouldLaunchFirstScreen ->
+            if (shouldLaunchFirstScreen) {
+                Screen1()
+            } else {
+                Screen2()
+            }
         }
     }
 }
