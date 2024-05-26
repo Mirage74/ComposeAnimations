@@ -1,18 +1,32 @@
 package com.balex.composeanimations.ui.screen
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.animateIntAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -36,7 +50,29 @@ fun Test() {
             mutableStateOf(true)
         }
 
-        val size by animateDpAsState(targetValue = if (isIncreased) 200.dp else 100.dp)
+        val infiniteTransition = rememberInfiniteTransition()
+
+        val size by infiniteTransition.animateFloat(
+            initialValue = 200f,
+            targetValue = 100f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(durationMillis = 2000),
+                repeatMode = RepeatMode.Reverse
+            ))
+
+//        val size by animateDpAsState(
+//            targetValue = if (isIncreased) 200.dp else 100.dp,
+//            animationSpec = tween(
+//                durationMillis = 2000,
+//                delayMillis = 1000
+//            )
+
+//            animationSpec = spring(dampingRatio = Spring.DampingRatioHighBouncy, stiffness = Spring.StiffnessLow)
+
+
+
+
+
 
         Button(
             modifier = Modifier.fillMaxWidth(),
@@ -48,14 +84,17 @@ fun Test() {
         }
         AnimatedContainer(
             text = "Size",
-            size = size
+            size = size.dp
         )
 
         var isRect by remember {
             mutableStateOf(true)
         }
 
-        val radius by animateIntAsState(targetValue = if (isRect) 4 else 50)
+        val radius by animateIntAsState(
+            targetValue = if (isRect) 4 else 50,
+            //animationSpec = spring(dampingRatio = Spring.DampingRatioHighBouncy, stiffness = Spring.StiffnessVeryLow)
+            )
 
         Button(
             modifier = Modifier.fillMaxWidth(),
