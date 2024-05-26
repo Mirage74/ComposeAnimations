@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
+import com.balex.composeanimations.ui.screen.AnimateContent
 import com.balex.composeanimations.ui.screen.Test
 import com.balex.composeanimations.ui.theme.ComposeAnimationsTheme
 
@@ -19,7 +20,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Test()
+                    AnimateContent()
                 }
             }
         }
